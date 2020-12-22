@@ -37,9 +37,9 @@
         <version>20201115</version>
     </dependency>
     <dependency>
-        <groupId>com.bizerba.jpos</groupId>
-        <artifactId>jpos</artifactId>
-        <version>1.14</version>
+      <groupId>com.bizerba.jpos</groupId>
+      <artifactId>jpos</artifactId>
+      <version>1.14</version>
     </dependency>
   </dependencies>
 
@@ -60,10 +60,17 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
         </plugin>
+
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
+          <configuration>
+            <additionalClasspathElements>
+              <additionalClasspathElement>/opt/bizerba/posscale/*</additionalClasspathElement>
+            </additionalClasspathElements>
+          </configuration>
         </plugin>
+
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
@@ -84,6 +91,29 @@
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
+        </plugin>
+
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+                </execution>
+            </executions>
+          <configuration>
+            <executable>java</executable>
+            <arguments>
+              <argument>-classpath</argument>
+              <!-- automatically creates the classpath using all project dependencies,
+                   also adding the project build directory -->
+              <classpath/>
+              <argument>com.wholefoods.pomegranate.rik.Main</argument>
+          </arguments>
+        </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
