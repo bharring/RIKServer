@@ -4,17 +4,26 @@ import jpos.JposException;
 
 import static java.lang.Thread.sleep;
 
-import org.json.JSONObject;
+import java.util.Timer; 
 
+import java.net.URL;
+import java.net.URLClassLoader;
 
 public class Main {
-    public static void main(String[] args) throws JposException, InterruptedException {
+
+    public static void main(String[] args) throws JposException {
+
+
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+
+        URL[] urls = ((URLClassLoader)cl).getURLs();
+        
+        for(URL url: urls){
+            System.out.println(url.getFile());
+        }
 
         final RIK rik = new RIK();
         rik.open();
-
-        // Server server = new Server("localhost", 8887);
-        // server.run();
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
@@ -26,14 +35,16 @@ public class Main {
             }
         });
 
-        while (true) {
-            sleep(50);
-            int weight = rik.getScaleLiveWeight();
-            System.out.println(weight);
-            JSONObject json = new JSONObject();
-            json.put("weight", weight);
-            // server.broadcast(json.toString());
-        }
+        Server server = new Server("localhost", 8887);
+
+        ServerTimer serverTimer = new ServerTimer();
+        serverTimer.rik = rik;
+        serverTimer.server = server;
+
+        Timer timer = new Timer(); 
+        timer.schedule(serverTimer, 0, 100);
+
+        server.run();
     }
 }
 
