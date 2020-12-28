@@ -6,22 +6,9 @@ import static java.lang.Thread.sleep;
 
 import java.util.Timer; 
 
-import java.net.URL;
-import java.net.URLClassLoader;
-
 public class Main {
 
     public static void main(String[] args) throws JposException {
-
-
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-        URL[] urls = ((URLClassLoader)cl).getURLs();
-        
-        for(URL url: urls){
-            System.out.println(url.getFile());
-        }
-
         final RIK rik = new RIK();
         rik.open();
 

@@ -14,12 +14,11 @@ class ServerTimer extends TimerTask {
   public void run()
   { 
     try {
-
-    int netWeight = rik.getScaleLiveWeight();
-    System.out.println(netWeight);
-    JSONObject json = new JSONObject();
-    json.put("netWeight", netWeight);
-    // server.broadcast(json.toString());
+      int netWeight = rik.getScaleLiveWeight();
+      JSONObject json = new JSONObject();
+      json.put("netWeight", netWeight);
+      // System.out.println(json.toString());
+      server.broadcast(json.toString());
     } catch (JposException e) {
       e.printStackTrace();
     }
