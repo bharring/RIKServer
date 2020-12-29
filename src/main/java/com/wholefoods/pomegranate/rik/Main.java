@@ -4,34 +4,26 @@ import jpos.JposException;
 
 import static java.lang.Thread.sleep;
 
-import java.util.Timer; 
+import java.util.Timer;
 
 public class Main {
 
     public static void main(String[] args) throws JposException {
-        final RIK rik = new RIK();
-        rik.open();
-
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                try {
-                    rik.exit();
-                } catch (JposException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
+        
+        // start WebSocket thread
         Server server = new Server("localhost", 8887);
+        Thread serverThread = new Thread(server);
+        serverThread.start();
 
-        ServerTimer serverTimer = new ServerTimer();
-        serverTimer.rik = rik;
-        serverTimer.server = server;
+        // start RIK thread
+        final RIK rik = new RIK();
+        Thread rikThread = new Thread(rik);
+        rikThread.start();
 
-        Timer timer = new Timer(); 
-        timer.schedule(serverTimer, 0, 100);
-
-        server.run();
+        // start weight polling thread
+        Timer timer = new Timer();
+        ServerTimer serverTimer = new ServerTimer(rik, server);
+        timer.schedule(serverTimer, 1000, 1000);
     }
 }
 

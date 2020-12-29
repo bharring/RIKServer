@@ -1,1 +1,1 @@
-java -cp target/rik-1.0.0.jar:target/classes:/opt/bizerba/posscale/*:/opt/bizerba/posscale:lib/* com.wholefoods.pomegranate.rik.Main
+java -cp /opt/bizerba/posscale:/opt/bizerba/posscale/*:target/rik-1.0.0.jar:lib/Java-WebSocket-1.5.1-with-dependencies.jar:lib/json-20201115.jar:lib/slf4j-api-1.7.25.jar com.wholefoods.pomegranate.rik.Main
