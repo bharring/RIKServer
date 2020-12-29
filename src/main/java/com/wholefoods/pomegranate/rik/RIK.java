@@ -19,8 +19,10 @@ public class RIK implements Runnable {
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 public void run() {
                     try {
+                        System.out.println("closing");
                         scale.setDeviceEnabled(false);
                         scale.close();
+                        System.out.println("closed");
                     } catch (JposException e) {
                         e.printStackTrace();
                     }
